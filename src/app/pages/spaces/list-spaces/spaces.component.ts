@@ -37,6 +37,13 @@ export class SpacesComponent implements OnInit {
     endTime: ''
   };
 
+  spaceTypes = [
+    { label: 'Meeting Room', value: 'meeting_room' },
+    { label: 'Auditorium', value: 'auditorium' },
+    { label: 'Open Space', value: 'open_space' },
+    { label: 'Other', value: 'other' }
+  ];
+
   uniqueTypes: string[] = [];
   allTimeOptions: string[] = [];
 
@@ -123,6 +130,11 @@ export class SpacesComponent implements OnInit {
 
   createReservation(spaceId: number) {
     this.router.navigate(['/reservations/create'], { queryParams: { spaceId } });
+  }
+
+  getSpaceTypeLabel(typeValue: string): string {
+    const spaceType = this.spaceTypes.find(type => type.value === typeValue);
+    return spaceType ? spaceType.label : typeValue;
   }
 
   deleteSpace(spaceId: number, spaceName: string) {

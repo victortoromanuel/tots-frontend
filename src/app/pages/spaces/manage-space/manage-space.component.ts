@@ -34,7 +34,6 @@ export class ManageSpaceComponent implements OnInit {
     { label: 'Meeting Room', value: 'meeting_room' },
     { label: 'Auditorium', value: 'auditorium' },
     { label: 'Open Space', value: 'open_space' },
-    { label: 'Other', value: 'other' }
   ];
 
   constructor(

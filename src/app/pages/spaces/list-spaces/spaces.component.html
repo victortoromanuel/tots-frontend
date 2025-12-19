@@ -42,7 +42,7 @@
           (change)="applyFilters()"
         >
           <option value="">All Types</option>
-          <option *ngFor="let type of uniqueTypes" [value]="type">{{ type }}</option>
+          <option *ngFor="let type of uniqueTypes" [value]="type">{{ getSpaceTypeLabel(type) }}</option>
         </select>
       </div>
 
@@ -134,6 +134,10 @@
 
   <div *ngIf="!loading" class="table-card card">
     <mc-table [columns]="columns" [response]="{ data: filteredSpaces, total: filteredSpaces.length }">
+      <ng-template mcTdTemplate="type" let-item>
+        <span class="type-badge">{{ getSpaceTypeLabel(item.type) }}</span>
+      </ng-template>
+      
       <ng-template mcTdTemplate="actions" let-item>
         <div class="action-buttons">
           <button class="btn btn-primary btn-sm" (click)="createReservation(item.id)">

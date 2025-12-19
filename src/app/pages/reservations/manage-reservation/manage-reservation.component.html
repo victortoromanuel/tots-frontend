@@ -43,6 +43,40 @@
       </div>
     </div>
 
+    <!-- Calendar Section - Collapsible -->
+    <div *ngIf="space && mode === 'create' && !loading" class="calendar-section">
+      <button type="button" class="calendar-toggle" (click)="toggleCalendar()">
+        <div class="toggle-header">
+          <div class="toggle-left">
+            <i class="pi pi-calendar"></i>
+            <h3>View Reservation Calendar</h3>
+          </div>
+          <i [class]="showCalendar ? 'pi pi-chevron-up' : 'pi pi-chevron-down'"></i>
+        </div>
+        <p class="toggle-subtitle">{{ showCalendar ? 'Hide' : 'Show' }} weekly calendar with all reservations for this space</p>
+      </button>
+
+      <div *ngIf="showCalendar" class="calendar-content">
+        <div *ngIf="loadingReservations" class="loading-state">
+          <i class="pi pi-spin pi-spinner"></i>
+          <span>Loading reservations...</span>
+        </div>
+
+        <app-reservation-calendar 
+          *ngIf="!loadingReservations && spaceId !== null"
+          [spaceId]="spaceId"
+          [reservations]="allReservationsForSpace"
+          [startHour]="7"
+          [endHour]="22">
+        </app-reservation-calendar>
+
+        <div *ngIf="!loadingReservations && allReservationsForSpace.length === 0" class="no-reservations">
+          <i class="pi pi-calendar-plus"></i>
+          <p>No reservations found for this space.</p>
+        </div>
+      </div>
+    </div>
+
     <form (ngSubmit)="onSubmit()" #reservationForm="ngForm">
       <div class="form-group">
         <label for="date">

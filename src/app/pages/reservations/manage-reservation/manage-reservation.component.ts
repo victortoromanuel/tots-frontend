@@ -4,11 +4,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../../core/services/api.service';
 import { ToastService } from '../../../core/services/toast.service';
+import { ReservationCalendarComponent } from '../../../shared/components/reservation-calendar/reservation-calendar.component';
 
 @Component({
   selector: 'app-manage-reservation',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReservationCalendarComponent],
   templateUrl: './manage-reservation.component.html',
   styleUrls: ['./manage-reservation.component.css']
 })
@@ -26,6 +27,9 @@ export class ManageReservationComponent implements OnInit {
   loading = true;
   error: string | null = null;
   reservations: any[] = [];
+  allReservationsForSpace: any[] = []; // All reservations for calendar display
+  loadingReservations = false;
+  showCalendar = false; // Calendar collapsed by default
   occupiedTimeRanges: { start: string; end: string; }[] = [];
   allTimeOptions: string[] = [];
   availableStartTimes: string[] = [];
@@ -73,7 +77,7 @@ export class ManageReservationComponent implements OnInit {
   }
 
   generateAllTimeOptions() {
-    for (let hour = 0; hour < 24; hour++) {
+    for (let hour = 7; hour < 23; hour++) {
       const timeString = `${hour.toString().padStart(2, '0')}:00`;
       this.allTimeOptions.push(timeString);
     }
@@ -86,9 +90,27 @@ export class ManageReservationComponent implements OnInit {
       next: (spaces) => {
         this.space = spaces.find(s => s.id === id);
         this.loading = false;
+        // Load all reservations for calendar display
+        this.loadAllReservationsForSpace(id);
       },
       error: () => {
         this.loading = false;
+      }
+    });
+  }
+
+  loadAllReservationsForSpace(spaceId: number) {
+    this.loadingReservations = true;
+    this.apiService.getAllReservationsBySpace(spaceId).subscribe({
+      next: (reservations) => {
+        console.log('Loaded all reservations for space:', spaceId, reservations);
+        this.allReservationsForSpace = reservations;
+        this.loadingReservations = false;
+      },
+      error: (err) => {
+        console.error('Error loading reservations:', err);
+        this.allReservationsForSpace = [];
+        this.loadingReservations = false;
       }
     });
   }
@@ -263,6 +285,10 @@ export class ManageReservationComponent implements OnInit {
     } else {
       this.router.navigate(['/reservations']);
     }
+  }
+
+  toggleCalendar() {
+    this.showCalendar = !this.showCalendar;
   }
 
   get pageTitle(): string {

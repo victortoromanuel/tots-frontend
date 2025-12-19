@@ -1,0 +1,80 @@
+<div class="calendar-container">
+  <!-- Debug info -->
+  <div *ngIf="reservations.length === 0" class="debug-info">
+    <i class="pi pi-info-circle"></i>
+    <span>No reservations data available. The calendar will show all slots as available.</span>
+  </div>
+  
+  <!-- Header with navigation -->
+  <div class="calendar-header">
+    <div class="header-actions">
+      <button class="btn btn-icon" (click)="previousWeek()" title="Previous week">
+        <i class="pi pi-chevron-left"></i>
+      </button>
+      <button class="btn btn-today" (click)="goToToday()">Today</button>
+      <button class="btn btn-icon" (click)="nextWeek()" title="Next week">
+        <i class="pi pi-chevron-right"></i>
+      </button>
+    </div>
+    <div class="header-title">
+      <h3>{{ getWeekRange() }}</h3>
+    </div>
+    <div class="header-legend">
+      <span class="legend-item">
+        <span class="dot available"></span> Available
+      </span>
+      <span class="legend-item">
+        <span class="dot reserved"></span> Reserved
+      </span>
+    </div>
+  </div>
+
+  <!-- Calendar Grid -->
+  <div class="calendar-grid">
+    <!-- Time column -->
+    <div class="time-column">
+      <div class="time-header">Time</div>
+      <div class="time-slot" *ngFor="let time of timeSlots">
+        {{ time }}
+      </div>
+    </div>
+
+    <!-- Days columns -->
+    <div class="day-column" *ngFor="let day of weekSchedule" [class.today]="day.isToday">
+      <div class="day-header">
+        <div class="day-name">{{ day.dayName }}</div>
+        <div class="day-date">{{ day.date.getDate() }}</div>
+      </div>
+      <div
+        class="slot"
+        *ngFor="let slot of day.slots"
+        [class.reserved]="slot.reserved"
+        [class.available]="!slot.reserved"
+        [title]="getSlotTooltip(slot)"
+      >
+        <span class="slot-label" *ngIf="slot.reserved && slot.eventName">
+          {{ slot.eventName }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile view (list style) -->
+  <div class="calendar-mobile">
+    <div class="mobile-day" *ngFor="let day of weekSchedule" [class.today]="day.isToday">
+      <div class="mobile-day-header">
+        <span class="mobile-day-name">{{ day.dayName }}</span>
+        <span class="mobile-day-date">{{ day.date.getDate() }} {{ getMonthName(day.date) }}</span>
+      </div>
+      <div class="mobile-slots">
+        <div class="mobile-slot-group" *ngFor="let slot of day.slots">
+          <div class="mobile-time">{{ slot.time }}</div>
+          <div class="mobile-status" [class.reserved]="slot.reserved" [class.available]="!slot.reserved">
+            <i class="pi" [class.pi-check-circle]="!slot.reserved" [class.pi-times-circle]="slot.reserved"></i>
+            <span>{{ slot.reserved ? (slot.eventName || 'Reserved') : 'Available' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

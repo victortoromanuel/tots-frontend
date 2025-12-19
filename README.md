@@ -146,6 +146,7 @@ The app connects to a REST API with the following endpoints:
 - `PUT /spaces/:id` - Update space (admin)
 - `DELETE /spaces/:id` - Delete space (admin)
 - `GET /reservations` - List user reservations
+- `GET /reservations/space/:id` - Get all reservations for a space
 - `POST /reservations` - Create reservation
 - `PUT /reservations/:id` - Update reservation
 - `DELETE /reservations/:id` - Delete reservation

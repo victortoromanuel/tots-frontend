@@ -203,9 +203,7 @@ export class ManageReservationComponent implements OnInit {
       end: this.formatTime(maxTime)
     }];
 
-    // Filter available times (exclude hours within occupied range)
     this.availableStartTimes = this.allTimeOptions;
-
     this.availableEndTimes = this.allTimeOptions;
   }
 

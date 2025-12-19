@@ -32,7 +32,7 @@ A comprehensive space management and reservation system featuring:
 
 1. **Clone the repository**
 ```bash
-git clone <repository-url>
+git clone https://github.com/victortoromanuel/tots-frontend.git
 cd tots-frontend
 ```
 

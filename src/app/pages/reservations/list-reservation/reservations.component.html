@@ -1,0 +1,53 @@
+<div class="reservations-container container fade-in">
+  <div class="page-header">
+    <div class="header-content">
+      <i class="pi pi-calendar header-icon"></i>
+      <div class="header-text">
+        <h1>My Reservations</h1>
+        <p class="subtitle">Manage your space bookings</p>
+      </div>
+      <button *ngIf="!loading && reservations.length > 0" class="btn btn-primary" (click)="createNewReservation()">
+        <i class="pi pi-plus"></i>
+        <span>New Reservation</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>Loading your reservations...</p>
+  </div>
+
+  <div *ngIf="!loading && reservations.length === 0" class="empty-state card">
+    <div class="empty-content">
+      <i class="pi pi-calendar-plus empty-icon"></i>
+      <h3>No Reservations Yet</h3>
+      <p>You haven't made any reservations yet. Start by exploring available spaces!</p>
+      <button class="btn btn-primary btn-lg" (click)="createNewReservation()">
+        <i class="pi pi-search"></i>
+        <span>Browse Spaces</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && reservations.length > 0" class="table-card card">
+    <div class="table-header">
+      <i class="pi pi-list"></i>
+      <span>All Reservations ({{ reservations.length }})</span>
+    </div>
+    <mc-table [columns]="columns" [response]="{ data: reservations, total: reservations.length }">
+      <ng-template mcTdTemplate="actions" let-item>
+        <div class="action-buttons">
+          <button class="btn btn-secondary btn-sm" (click)="editReservation(item.id)">
+            <i class="pi pi-pencil"></i>
+            <span>Edit</span>
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="deleteReservation(item.id)">
+            <i class="pi pi-trash"></i>
+            <span>Delete</span>
+          </button>
+        </div>
+      </ng-template>
+    </mc-table>
+  </div>
+</div>

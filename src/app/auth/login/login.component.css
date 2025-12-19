@@ -1,0 +1,134 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 480px;
+}
+
+.login-card {
+  padding: 3rem;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.logo-container {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.logo-container i {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.login-header h1 {
+  margin-bottom: 0.75rem;
+  font-size: 2rem;
+}
+
+.subtitle {
+  color: #64748b;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.form-group label i {
+  color: #667eea;
+  font-size: 1rem;
+}
+
+.form-group input {
+  color: #2c3e50 !important;
+  background: #ffffff !important;
+}
+
+.form-group input::placeholder {
+  color: #94a3b8 !important;
+}
+
+.btn-block {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.alert-error {
+  background: linear-gradient(135deg, #ffe6e6 0%, #ffd4d4 100%);
+  border-color: #f5576c;
+  color: #c1121f;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  border: 2px solid #f5576c;
+}
+
+.alert-error i {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f1f5f9;
+}
+
+.register-link p {
+  color: #64748b;
+  margin: 0;
+}
+
+.register-link a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.register-link a:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+@media (max-width: 576px) {
+  .login-card {
+    padding: 2rem;
+  }
+  
+  .login-header h1 {
+    font-size: 1.75rem;
+  }
+}

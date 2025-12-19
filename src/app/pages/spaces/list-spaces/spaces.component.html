@@ -1,0 +1,165 @@
+<div class="spaces-container container fade-in">
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-left">
+        <i class="pi pi-th-large header-icon"></i>
+        <div>
+          <h1>Available Spaces</h1>
+          <p class="subtitle">Find and book the perfect space for your needs</p>
+        </div>
+      </div>
+      <button 
+        *ngIf="isAdmin" 
+        class="btn btn-primary"
+        routerLink="/spaces/create"
+      >
+        <i class="pi pi-plus"></i>
+        <span>Create Space</span>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>Loading spaces...</p>
+  </div>
+
+  <div *ngIf="!loading" class="filters-card card">
+    <div class="card-header">
+      <i class="pi pi-filter"></i>
+      <h3>Filter Spaces</h3>
+    </div>
+    
+    <div class="filters-grid">
+      <div class="filter-group">
+        <label for="typeFilter">
+          <i class="pi pi-tag"></i>
+          Space Type
+        </label>
+        <select 
+          id="typeFilter" 
+          [(ngModel)]="filters.type" 
+          (change)="applyFilters()"
+        >
+          <option value="">All Types</option>
+          <option *ngFor="let type of uniqueTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="minCapacity">
+          <i class="pi pi-users"></i>
+          Min Capacity
+        </label>
+        <input 
+          type="number" 
+          id="minCapacity" 
+          [(ngModel)]="filters.minCapacity" 
+          (input)="applyFilters()"
+          placeholder="0"
+          min="0"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="maxCapacity">
+          <i class="pi pi-users"></i>
+          Max Capacity
+        </label>
+        <input 
+          type="number" 
+          id="maxCapacity" 
+          [(ngModel)]="filters.maxCapacity" 
+          (input)="applyFilters()"
+          placeholder="Any"
+          min="0"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="date">
+          <i class="pi pi-calendar"></i>
+          Date
+        </label>
+        <input 
+          type="date" 
+          id="date" 
+          [(ngModel)]="filters.date" 
+          (change)="applyFilters()"
+        />
+      </div>
+
+      <div class="filter-group">
+        <label for="startTime">
+          <i class="pi pi-clock"></i>
+          Start Time
+        </label>
+        <select 
+          id="startTime" 
+          [(ngModel)]="filters.startTime" 
+          (change)="applyFilters()"
+        >
+          <option value="">Select start time</option>
+          <option *ngFor="let time of allTimeOptions" [value]="time">{{ time }}</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="endTime">
+          <i class="pi pi-clock"></i>
+          End Time
+        </label>
+        <select 
+          id="endTime" 
+          [(ngModel)]="filters.endTime" 
+          (change)="applyFilters()"
+        >
+          <option value="">Select end time</option>
+          <option *ngFor="let time of allTimeOptions" [value]="time">{{ time }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-footer">
+      <div class="results-badge">
+        <i class="pi pi-check-circle"></i>
+        <span>{{ filteredSpaces.length }} of {{ spaces.length }} spaces found</span>
+      </div>
+      <button class="btn btn-secondary" (click)="clearFilters()">
+        <i class="pi pi-times"></i>
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!loading" class="table-card card">
+    <mc-table [columns]="columns" [response]="{ data: filteredSpaces, total: filteredSpaces.length }">
+      <ng-template mcTdTemplate="actions" let-item>
+        <div class="action-buttons">
+          <button class="btn btn-primary btn-sm" (click)="createReservation(item.id)">
+            <i class="pi pi-plus"></i>
+            <span>Book Now</span>
+          </button>
+          <button 
+            *ngIf="isAdmin" 
+            class="btn btn-edit btn-sm" 
+            [routerLink]="['/spaces/edit', item.id]"
+            title="Edit space"
+          >
+            <i class="pi pi-pencil"></i>
+            <span>Edit</span>
+          </button>
+          <button 
+            *ngIf="isAdmin" 
+            class="btn btn-danger btn-sm" 
+            (click)="deleteSpace(item.id, item.name)"
+            title="Delete space"
+          >
+            <i class="pi pi-trash"></i>
+            <span>Delete</span>
+          </button>
+        </div>
+      </ng-template>
+    </mc-table>
+  </div>
+</div>

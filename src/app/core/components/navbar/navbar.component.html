@@ -1,0 +1,24 @@
+<nav *ngIf="isAuthenticated()" class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-brand">
+      <i class="pi pi-building"></i>
+      <span class="brand-name">Space Booking</span>
+    </div>
+    
+    <div class="navbar-menu">
+      <a routerLink="/spaces" routerLinkActive="active" class="nav-link">
+        <i class="pi pi-th-large"></i>
+        <span>Spaces</span>
+      </a>
+      <a routerLink="/reservations" routerLinkActive="active" class="nav-link">
+        <i class="pi pi-calendar"></i>
+        <span>My Reservations</span>
+      </a>
+    </div>
+
+    <button (click)="logout()" class="btn btn-logout">
+      <i class="pi pi-sign-out"></i>
+      <span>Logout</span>
+    </button>
+  </div>
+</nav>

@@ -1,0 +1,173 @@
+<div class="manage-reservation-container container fade-in">
+  <div class="page-header">
+    <div class="header-content">
+      <i [class]="'header-icon pi ' + pageIcon"></i>
+      <div>
+        <h1>{{ pageTitle }}</h1>
+        <p class="subtitle">{{ pageSubtitle }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>{{ loadingText }}</p>
+  </div>
+
+  <div *ngIf="!loading && space" class="form-card card">
+    <!-- Space Info Card (only show if we have space loaded) -->
+    <div class="space-info-card" *ngIf="space">
+      <div class="space-icon">
+        <i class="pi pi-building"></i>
+      </div>
+      <div class="space-details">
+        <h3>{{ space.name }}</h3>
+        <div class="space-meta">
+          <span class="badge badge-type">
+            <i class="pi pi-tag"></i>
+            {{ space.type }}
+          </span>
+          <span class="badge badge-capacity">
+            <i class="pi pi-users"></i>
+            {{ space.capacity }} people
+          </span>
+          <span class="badge badge-price" *ngIf="space.price_per_hour">
+            <i class="pi pi-dollar"></i>
+            ${{ space.price_per_hour }} / hour
+          </span>
+          <span class="badge badge-free" *ngIf="!space.price_per_hour">
+            <i class="pi pi-check-circle"></i>
+            Free
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" #reservationForm="ngForm">
+      <div class="form-group">
+        <label for="date">
+          <i class="pi pi-calendar"></i>
+          Date
+        </label>
+        <input 
+          type="date" 
+          id="date" 
+          name="date" 
+          [(ngModel)]="reservation.date" 
+          (change)="onDateChange()"
+          required
+        />
+      </div>
+
+      <div *ngIf="reservation.date && occupiedTimeRanges.length > 0" class="alert alert-warning">
+        <div class="alert-header">
+          <i class="pi pi-exclamation-triangle"></i>
+          <h4>Occupied Time Ranges</h4>
+        </div>
+        <div class="occupied-times-list">
+          <div *ngFor="let range of occupiedTimeRanges" class="time-range-badge">
+            <i class="pi pi-clock"></i>
+            <span>{{ range.start }} - {{ range.end }}</span>
+          </div>
+        </div>
+        <p class="alert-text">Please select times outside these ranges.</p>
+      </div>
+
+      <div *ngIf="reservation.date && occupiedTimeRanges.length === 0 && reservations.length === 0" class="alert alert-success">
+        <i class="pi pi-check-circle"></i>
+        <p>This space is available all day on this date!</p>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="startTime">
+            <i class="pi pi-clock"></i>
+            Start Time
+          </label>
+          <select 
+            id="startTime" 
+            name="startTime" 
+            [(ngModel)]="reservation.startTime" 
+            required
+          >
+            <option value="">Select start time</option>
+            <option *ngFor="let time of availableStartTimes" [value]="time">{{ time }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="endTime">
+            <i class="pi pi-clock"></i>
+            End Time
+          </label>
+          <select 
+            id="endTime" 
+            name="endTime" 
+            [(ngModel)]="reservation.endTime" 
+            required
+          >
+            <option value="">Select end time</option>
+            <option *ngFor="let time of availableEndTimes" [value]="time">{{ time }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="purpose">
+          <i class="pi pi-file-edit"></i>
+          Purpose / Event Name
+        </label>
+        <textarea 
+          id="purpose" 
+          name="purpose" 
+          [(ngModel)]="reservation.purpose" 
+          rows="4"
+          placeholder="Describe the purpose of your reservation..."
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" [disabled]="!reservationForm.form.valid">
+          <i class="pi pi-check"></i>
+          <span>{{ submitButtonText }}</span>
+        </button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">
+          <i class="pi pi-times"></i>
+          <span>Cancel</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Error States -->
+  <div *ngIf="!loading && !space && spaceId && mode === 'create'" class="error-state card">
+    <i class="pi pi-exclamation-circle error-icon"></i>
+    <h3>Space Not Found</h3>
+    <p>The requested space could not be found.</p>
+    <button class="btn btn-primary" (click)="cancel()">
+      <i class="pi pi-arrow-left"></i>
+      <span>Back to Spaces</span>
+    </button>
+  </div>
+
+  <div *ngIf="!loading && !spaceId && !reservationId" class="error-state card">
+    <i class="pi pi-info-circle error-icon"></i>
+    <h3>No Space Selected</h3>
+    <p>Please select a space from the spaces list.</p>
+    <button class="btn btn-primary" (click)="cancel()">
+      <i class="pi pi-arrow-left"></i>
+      <span>Back to Spaces</span>
+    </button>
+  </div>
+
+  <div *ngIf="!loading && error && mode === 'edit'" class="error-state card">
+    <i class="pi pi-exclamation-circle error-icon"></i>
+    <h3>Error Loading Reservation</h3>
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="cancel()">
+      <i class="pi pi-arrow-left"></i>
+      <span>Back to Reservations</span>
+    </button>
+  </div>
+</div>

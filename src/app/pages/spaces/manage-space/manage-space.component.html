@@ -1,0 +1,133 @@
+<div class="manage-space-container container fade-in">
+  <div class="page-header">
+    <div class="header-content">
+      <i [class]="'header-icon pi ' + pageIcon"></i>
+      <div>
+        <h1>{{ pageTitle }}</h1>
+        <p class="subtitle">{{ pageSubtitle }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loadingSpace" class="loading">
+    <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <p>{{ loadingText }}</p>
+  </div>
+
+  <div *ngIf="!loadingSpace" class="form-card card">
+    <form (ngSubmit)="onSubmit()" #spaceForm="ngForm">
+      <div class="form-grid">
+        <!-- Name Field -->
+        <div class="form-group full-width">
+          <label for="name">
+            <i class="pi pi-tag"></i>
+            Space Name <span class="required">*</span>
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            [(ngModel)]="space.name"
+            placeholder="Enter space name"
+            required
+            [class.error]="errors.name"
+          />
+          <span class="error-message" *ngIf="errors.name">{{ errors.name }}</span>
+        </div>
+
+        <!-- Description Field -->
+        <div class="form-group full-width">
+          <label for="description">
+            <i class="pi pi-align-left"></i>
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            [(ngModel)]="space.description"
+            placeholder="Enter space description (optional)"
+            rows="4"
+          ></textarea>
+        </div>
+
+        <!-- Type Field -->
+        <div class="form-group">
+          <label for="type">
+            <i class="pi pi-th-large"></i>
+            Space Type <span class="required">*</span>
+          </label>
+          <select
+            id="type"
+            name="type"
+            [(ngModel)]="space.type"
+            required
+            [class.error]="errors.type"
+          >
+            <option value="">Select space type</option>
+            <option *ngFor="let type of spaceTypes" [value]="type.value">{{ type.label }}</option>
+          </select>
+          <span class="error-message" *ngIf="errors.type">{{ errors.type }}</span>
+        </div>
+
+        <!-- Capacity Field -->
+        <div class="form-group">
+          <label for="capacity">
+            <i class="pi pi-users"></i>
+            Capacity <span class="required">*</span>
+          </label>
+          <input
+            type="number"
+            id="capacity"
+            name="capacity"
+            [(ngModel)]="space.capacity"
+            placeholder="Number of people"
+            min="1"
+            required
+            [class.error]="errors.capacity"
+          />
+          <span class="error-message" *ngIf="errors.capacity">{{ errors.capacity }}</span>
+        </div>
+
+        <!-- Price Per Hour Field -->
+        <div class="form-group full-width">
+          <label for="price_per_hour">
+            <i class="pi pi-dollar"></i>
+            Price Per Hour
+          </label>
+          <input
+            type="number"
+            id="price_per_hour"
+            name="price_per_hour"
+            [(ngModel)]="space.price_per_hour"
+            placeholder="Enter price per hour (optional)"
+            min="0"
+            step="0.01"
+          />
+          <span class="hint">Leave empty if the space is free</span>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancel()"
+          [disabled]="loading"
+        >
+          <i class="pi pi-times"></i>
+          <span>Cancel</span>
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="loading || loadingSpace"
+        >
+          <i class="pi pi-spin pi-spinner" *ngIf="loading"></i>
+          <i class="pi pi-check" *ngIf="!loading"></i>
+          <span>{{ loading ? submitButtonLoadingText : submitButtonText }}</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

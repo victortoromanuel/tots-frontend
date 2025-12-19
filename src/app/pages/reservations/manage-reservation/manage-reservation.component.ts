@@ -204,15 +204,9 @@ export class ManageReservationComponent implements OnInit {
     }];
 
     // Filter available times (exclude hours within occupied range)
-    this.availableStartTimes = this.allTimeOptions.filter(time => {
-      const hour = parseInt(time.split(':')[0]);
-      return hour < minHour || hour >= maxHour;
-    });
+    this.availableStartTimes = this.allTimeOptions;
 
-    this.availableEndTimes = this.allTimeOptions.filter(time => {
-      const hour = parseInt(time.split(':')[0]);
-      return hour < minHour || hour > maxHour;
-    });
+    this.availableEndTimes = this.allTimeOptions;
   }
 
   formatTime(date: Date): string {
